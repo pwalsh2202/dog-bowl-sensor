@@ -1,9 +1,5 @@
-# mqtt-bed-sensor
-MQTT Bed Sensor/Scales for bed occupancy (although entirely adaptable for anything), for integrating with Home Assistant, OpenHAB, Domoticz and anything else supporting MQTT.
-
-Has remote tare function which you can issue over MQTT if your sensor suffers from drift which many load cells seem to. This saves having to re-start the device everytime you want to tare.
-
-Full guide available [here](https://everythingsmarthome.co.uk/howto/building-a-bed-occupancy-sensor-for-home-assistant/)
+# dog-bowl-sensor
+MQTT Scale for Dog Water and Food Bowl, adapted from [EverythingSmartHome's mqtt-bed-sensor](https://everythingsmarthome.co.uk/howto/building-a-bed-occupancy-sensor-for-home-assistant/)
 
 ## Requirements
 ### Hardware
@@ -17,7 +13,7 @@ Full guide available [here](https://everythingsmarthome.co.uk/howto/building-a-b
 - [ESP boards](https://github.com/esp8266/Arduino)
 
 ## Use case
-This was built specifically with bed occupancy in mind so that automations can be triggered when in bed such as switching lights off, locking doors, setting alarms etc etc using Home Assistant. I found that load cells seem to "drift" a little over time, with this in mind a remote tare function was built in so that I can issue a tare command over MQTT which will reset it to zero without having to physically reset the device everytime.
+This project is being built to automatically detect the water and food in my dog's bowl and then integrate this data into HomeKit by way of Home Assistant.
 
 ## Calibration
 1. Load calibration sketch and ensure no additional weight is on the bed/scale
@@ -31,15 +27,6 @@ This was built specifically with bed occupancy in mind so that automations can b
 3. Observe output on serial monitor, place known weight on scales and ensure read-out is correct.
 4. Once happy, unplug and plug into main power supply and enjoy!
 
-## Need help?
-Join the community on discord:
-* [Discord](https://discord.gg/Bgfvy2f)
-
-## Support
-If you would like to support this project and many more like it, please consider supporting me so I can keep delivering more projects just like this one:
-
-* [Patreon](https://www.patreon.com/everythingsmarthome)
-* [Buy Me A Coffee!](https://www.buymeacoffee.com/EverySmartHome)
-
 ## Credits
-The original idea for this has been adapted from Zack over at [Self Hosted Home](https://selfhostedhome.com/diy-bed-presence-detection-home-assistant/)'s original build, so big thanks to him!
+This project will be based heavily on the work done by [EverythingSmartHome for an MQTT Bed Sensor](https://everythingsmarthome.co.uk/howto/building-a-bed-occupancy-sensor-for-home-assistant/)
+Additional credit goes to Zack over at [Self Hosted Home](https://selfhostedhome.com/diy-bed-presence-detection-home-assistant/) who inspired EverythingSmartHome's project.
