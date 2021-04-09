@@ -16,12 +16,12 @@ MQTT Scale for Dog Water and Food Bowl, adapted from [EverythingSmartHome's mqtt
 This project is being built to automatically detect the water and food in my dog's bowl and then integrate this data into HomeKit by way of Home Assistant.
 
 ## Calibration
-1. Load calibration sketch and ensure no additional weight is on the bed/scale
+1. Load calibration sketch and ensure no additional weight is on the scale
 2. Using serial monitor, observe starting measurements
 3. Place known weight on bed/scale e.g 5kg and observe new measurements printed on monitor
 4. Adjust calibration factor variable and repeat steps till values are correct. Take note of calibration factor
 
-## Bed sensor
+## Dog Bowl sensor
 1. Load sketch, ensure no additional weight is on the scales
 2. Fill in all variables in config.h file
 3. Observe output on serial monitor, place known weight on scales and ensure read-out is correct.
