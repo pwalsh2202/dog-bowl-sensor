@@ -4,7 +4,7 @@
 #include <PubSubClient.h>
 #include "config.h"
 
-HX711 scale;                          // Initiate HX711 library
+HX711 water;                          // Initiate HX711 library
 WiFiClient wifiClient;                // Initiate WiFi library
 PubSubClient client(wifiClient);      // Initiate PubSubClient library
 
@@ -26,21 +26,29 @@ void setup() {
 
   client.setServer(MQTT_SERVER, 1883);                // Set MQTT server and port number
   client.setCallback(callback);                       // Set callback address, this is used for remote tare
-  scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);   // Start scale on specified pins
-  scale.wait_ready();                                 //Ensure scale is ready, this is a blocking function
-  scale.set_scale();                                  
-  Serial.println("Scale Set");
-  scale.wait_ready();
-  scale.tare();                                       // Tare scale on startup
-  scale.wait_ready();
-  Serial.println("Scale Zeroed");
+  water.begin(WATER_DOUT_PIN, WATER_SCK_PIN);         // Start water scale on specified pins
+  water.wait_ready();                                 // Ensure water scale is ready, this is a blocking function
+  water.set_scale();                                  
+  Serial.println("Water Set");
+  water.wait_ready();
+  water.tare();                                       // Tare scale on startup
+  water.wait_ready();
+  Serial.println("Water Zeroed");
+  food.begin(FOOD_DOUT_PIN, FOOD_SCK_PIN);            // Start food scale on specified pins
+  food.wait_ready();                                  // Ensure food scale is ready, this is a blocking function
+  food.set_scale();                                  
+  Serial.println("Food Set");
+  food.wait_ready();
+  food.tare();                                       // Tare scale on startup
+  food.wait_ready();
+  Serial.println("Food Zeroed");
 }
 
 void loop() {
   float reading; // Float for reading
   float raw; // Float for raw value which can be useful
-  scale.wait_ready(); // Wait till scale is ready, this is blocking if your hardware is not connected properly.
-  scale.set_scale(calibration_factor);  // Sets the calibration factor.
+  water.wait_ready(); // Wait till water scale is ready, this is blocking if your hardware is not connected properly.
+  water.set_scale(calibration_factor);  // Sets the calibration factor.
 
   // Ensure we are still connected to MQTT Topics
   if (!client.connected()) {
@@ -48,9 +56,9 @@ void loop() {
   }
   
   Serial.print("Reading: ");            // Prints weight readings in .2 decimal kg units.
-  scale.wait_ready();
-  reading = scale.get_units(10);        //Read scale in g/Kg
-  raw = scale.read_average(5);          //Read raw value from scale too
+  water.wait_ready();
+  reading = water.get_units(10);        //Read water scale in g/Kg
+  raw = water.read_average(5);          //Read raw value from scale too
   Serial.print(reading, 2);
   Serial.println(" kg");
   Serial.print("Raw: ");
@@ -64,13 +72,13 @@ void loop() {
 
   String value_str = String(reading);
   String value_raw_str = String(raw);
-  client.publish(STATE_TOPIC, (char *)value_str.c_str());               // Publish weight to the STATE topic
-  client.publish(STATE_RAW_TOPIC, (char *)value_raw_str.c_str());       // Publish raw value to the RAW topic
+  client.publish(WATER_STATE_TOPIC, (char *)value_str.c_str());               // Publish weight to the WATER_STATE topic
+  client.publish(WATER_STATE_RAW_TOPIC, (char *)value_raw_str.c_str());       // Publish raw value to the WATER_STATE_RAW topic
 
   client.loop();          // MQTT task loop
-  scale.power_down();    // Puts the scale to sleep mode for 3 seconds. I had issues getting readings if I did not do this
+  water.power_down();    // Puts the scale to sleep mode for 3 seconds. I had issues getting readings if I did not do this
   delay(3000);
-  scale.power_up();
+  water.power_up();
 }
 
 void reconnect() {
@@ -92,9 +100,9 @@ void reconnect() {
 void callback(char* topic, byte* payload, unsigned int length) {
   if (strcmp(topic, TARE_TOPIC) == 0) {
     Serial.println("starting tare...");
-    scale.wait_ready();
-    scale.set_scale();
-    scale.tare();       //Reset scale to zero
-    Serial.println("Scale reset to zero");
+    water.wait_ready();
+    water.set_scale();
+    water.tare();       //Reset water scale to zero
+    Serial.println("Water reset to zero");
   }
 }
